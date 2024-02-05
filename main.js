@@ -1,10 +1,97 @@
 // TODO: Add your import statements here.
+// import { getRoles, getCompanies} from "./modules/salaryData.js";
+// import { getAverageSalaryByRole, getAverageSalaryByCompany, getSalaryAtCompany, getIndustryAverageSalary } from "./modules/workAroundModule.js";
+// import { formatNumber } from "./modules/utilities.js";
 
-import { getRoles, getCompanies} from "./modules/salaryData.js";
+// PROJECT EDIT--- Adding js directly from salaryData.js, workAroundModule.js, and utilities.js 
+// Import/export not working running on local drive, will comment out import code 
 
-import { getAverageSalaryByRole, getAverageSalaryByCompany, getSalaryAtCompany, getIndustryAverageSalary } from "./modules/workAroundModule.js";
 
-import { formatNumber } from "./modules/utilities.js";
+
+//salaryData.js below 
+
+const salaryData = [
+  { role: 'CTO', company: 'Big Data Inc.', salary: 320000},
+  { role: 'Technical Lead', company: 'Big Data Inc.', salary: 230000},
+  { role: 'Software Engineer II', company: 'Big Data Inc.', salary: 180000},
+  { role: 'Software Engineer I', company: 'Big Data Inc.', salary: 140000},
+  { role: 'CTO', company: 'Medium Data Inc.', salary: 215000},
+  { role: 'Technical Lead', company: 'Medium Data Inc.', salary: 165000},
+  { role: 'Software Engineer II', company: 'Medium Data Inc.', salary: 140000},
+  { role: 'Software Engineer I', company: 'Medium Data Inc.', salary: 115000},
+  { role: 'CTO', company: 'Small Data Inc.', salary: 175000},
+  { role: 'Technical Lead', company: 'Small Data Inc.', salary: 135000},
+  { role: 'Software Engineer II', company: 'Small Data Inc.', salary: 115000},
+  { role: 'Software Engineer I', company: 'Small Data Inc.', salary: 95000},
+];
+
+const getRoles = () => {
+  return ['CTO', 'Technical Lead', 'Software Engineer II', 'Software Engineer I'];
+}
+
+const getCompanies = () => {
+  return ['Big Data Inc.', 'Medium Data Inc.', 'Small Data Inc.'];
+}
+
+  const getDataByRole = role => {
+    return salaryData.filter(obj => obj.role === role);
+  }
+  
+  const getDataByCompany = company => {
+    return salaryData.filter(obj => obj.company === company);
+  }
+
+
+
+  //workAroundModule.js below 
+
+
+const getAverageSalaryByRole = role => {
+  const roleData = getDataByRole(role);
+  const salariesOfRole = roleData.map(obj => obj.salary);
+  return calculateAverage(salariesOfRole);
+}
+
+const getAverageSalaryByCompany = company => {
+  const companyData = getDataByCompany(company);
+  const salariesAtCompany = companyData.map(obj => obj.salary);
+  return calculateAverage(salariesAtCompany);
+}
+
+const getSalaryAtCompany = (role, company) => {
+  const companyData = getDataByCompany(company);
+  const roleAtCompany = companyData.find(obj => obj.role === role);
+  return roleAtCompany.salary;
+}
+
+const getIndustryAverageSalary = () => {
+  const allSalaries = salaryData.map(obj => obj.salary);
+  return calculateAverage(allSalaries);
+}
+
+function calculateAverage(arrayOfNumbers) {
+  let total = 0;
+  arrayOfNumbers.forEach(number => total += number);
+  return (total / arrayOfNumbers.length).toFixed(2);
+}
+
+
+  //utilities.js below 
+
+
+const formatNumber = number => {
+  const formattedNumber = number.toString().split('');
+  
+for (let i = formattedNumber.length - 3; i > 0; i -= 3) {
+  if(formattedNumber[i] !== '.') {
+    formattedNumber.splice(i, 0, ',');
+    }
+  }
+  
+return formattedNumber.join('');
+}
+
+// export { formatNumber };
 
 // TODO: Get the companies and roles using the salaryData module.
 const companies = getCompanies();
